@@ -5,3 +5,4 @@ Screen3/4, Första version. Inte nöjd med utseende alls. Även när man trycker
 Uppdatering av JockesV1, la till mat menyer i V2, V3 kommer innerhålla bollarna.
 Uppdatering V3, Uppdateringen innehåller menyer för lek och även respons från djur. Djuret leker inte om den är hungrig.
 Uppdatering V4, Ändrar i gränssnitt, färger på text och backgrund. Fortfarande inte nöjd med(SE SCREEN5) att programmet fortsätter i annan ruta.
+Uppdatering V5, Fixat så allt sker i samma ruta men programmet gör inte riktigt som jag vill. Screen 6 Demonstrerar när jag trycker på skriv ut alla bollar. fungerar och gör det den ska. Men som du ser på Screen 7 när jag trycker på antingen Mata djur eller Lek med djur så visas inte alternativen riktigt som jag vill. Försöker lösa detta.
