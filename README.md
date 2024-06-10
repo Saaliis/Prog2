@@ -7,3 +7,4 @@ Uppdatering V3, Uppdateringen innehåller menyer för lek och även respons frå
 Uppdatering V4, Ändrar i gränssnitt, färger på text och backgrund. Fortfarande inte nöjd med(SE SCREEN5) att programmet fortsätter i annan ruta.
 Uppdatering V5, Fixat så allt sker i samma ruta men programmet gör inte riktigt som jag vill. Screen 6 Demonstrerar när jag trycker på skriv ut alla bollar. fungerar och gör det den ska. Men som du ser på Screen 7 när jag trycker på antingen Mata djur eller Lek med djur så visas inte alternativen riktigt som jag vill. Försöker lösa detta.
 Uppdatering V6 Titta screen 8/9, När jag väljer djur och mat eller djur och boll så kommer jag tillbaka till huvudmeny men inget alternativ att välja på. Fixas i nästa uppdatering.
+Uppdatering V7, Final version! Jag känner mig nöjd med gränssnittet. Screen10,11,12, Demonstrerar ställen för dom sista ändringarna. Man kan nu mata eller leka och återgå till huvudmenyn utan att nya rutor dyker upp.

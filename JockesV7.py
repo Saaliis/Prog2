@@ -240,6 +240,10 @@ class Application(tk.Tk):
         self.feed_button_confirm = tk.Button(self.button_frame, text="Mata", command=self.feed_animal, fg='black', bg='lime', font=('Helvetica', 12))
         self.feed_button_confirm.grid(row=3, column=0, columnspan=2, pady=5)
 
+        # Lägg till knapp för att återgå till huvudmenyn
+        self.back_to_menu_button = tk.Button(self.button_frame, text="Återgå till huvudmenyn", command=self.show_main_menu, fg='black', bg='lime', font=('Helvetica', 12))
+        self.back_to_menu_button.grid(row=4, column=0, columnspan=2, pady=5)
+
     def feed_animal(self):
         # Hämta valt djur och mat och visa resultatet i utmatningstexten
         animal_index = self.animal_var.get().split(":")[0]
@@ -248,7 +252,8 @@ class Application(tk.Tk):
             result = self.owner.feed(int(animal_index), food)
             self.output_text.delete(1.0, tk.END)
             self.output_text.insert(tk.END, result)
-        self.show_main_menu()
+        # Visa matningsalternativen igen eller återgå till huvudmenyn
+        self.show_feed_options()
 
     def show_play_options(self):
         animals = self.owner.get_animals()
@@ -279,6 +284,10 @@ class Application(tk.Tk):
         self.play_button_confirm = tk.Button(self.button_frame, text="Leka", command=self.play_with_animal, fg='black', bg='lime', font=('Helvetica', 12))
         self.play_button_confirm.grid(row=3, column=0, columnspan=2, pady=5)
 
+        # Lägg till knapp för att återgå till huvudmenyn
+        self.back_to_menu_button = tk.Button(self.button_frame, text="Återgå till huvudmenyn", command=self.show_main_menu, fg='black', bg='lime', font=('Helvetica', 12))
+        self.back_to_menu_button.grid(row=4, column=0, columnspan=2, pady=5)
+
     def play_with_animal(self):
         # Hämta valt djur och boll och visa resultatet i utmatningstexten
         animal_index = self.animal_var.get().split(":")[0]
@@ -287,12 +296,30 @@ class Application(tk.Tk):
             result = self.owner.play(int(animal_index), int(ball_index))
             self.output_text.delete(1.0, tk.END)
             self.output_text.insert(tk.END, result)
-        self.show_main_menu()
+        # Visa lekalternativen igen eller återgå till huvudmenyn
+        self.show_play_options()
 
     def show_main_menu(self):
         # Rensa alternativramen och visa huvudmenyn
         self.clear_frame(self.button_frame)
-        self.create_widgets()
+        self.create_main_menu()
+
+    def create_main_menu(self):
+        # Skapa och konfigurera knappar för huvudmenyn
+        self.print_animals_button = tk.Button(self.button_frame, text="Skriv ut alla djur", command=self.print_animals, fg='black', bg='lime', font=('Helvetica', 12))
+        self.print_animals_button.grid(row=0, column=0, padx=10, pady=5)
+
+        self.print_balls_button = tk.Button(self.button_frame, text="Skriv ut alla bollar", command=self.print_balls, fg='black', bg='lime', font=('Helvetica', 12))
+        self.print_balls_button.grid(row=0, column=1, padx=10, pady=5)
+
+        self.feed_button = tk.Button(self.button_frame, text="Mata djur", command=lambda: self.show_options("Mata djur"), fg='black', bg='lime', font=('Helvetica', 12))
+        self.feed_button.grid(row=1, column=0, padx=10, pady=5)
+
+        self.play_button = tk.Button(self.button_frame, text="Leka med djur", command=lambda: self.show_options("Leka med djur"), fg='black', bg='lime', font=('Helvetica', 12))
+        self.play_button.grid(row=1, column=1, padx=10, pady=5)
+
+        self.quit_button = tk.Button(self.button_frame, text="Avsluta", command=self.quit, fg='black', bg='lime', font=('Helvetica', 12))
+        self.quit_button.grid(row=2, column=0, columnspan=2, pady=5)
 
     def clear_frame(self, frame):
         # Rensa innehållet i ett frame
@@ -303,3 +330,4 @@ class Application(tk.Tk):
 if __name__ == "__main__":
     app = Application()
     app.mainloop()
+
