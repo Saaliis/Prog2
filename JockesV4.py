@@ -136,28 +136,29 @@ class Application(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Djurpark")
+        self.configure(bg='black')
         self.geometry("600x400")
         self.owner = PetOwner("Jocke")
         self.create_widgets()
 
     def create_widgets(self):
-        self.label = tk.Label(self, text="Välkommen till Djurparken")
-        self.label.pack()
+        self.label = tk.Label(self, text="Välkommen till Djurparken", fg='lime', bg='black', font=('Helvetica', 16))
+        self.label.pack(pady=10)
 
-        self.print_animals_button = tk.Button(self, text="Skriv ut alla djur", command=self.print_animals)
-        self.print_animals_button.pack()
+        self.print_animals_button = tk.Button(self, text="Skriv ut alla djur", command=self.print_animals, fg='black', bg='lime', font=('Helvetica', 12))
+        self.print_animals_button.pack(pady=5)
 
-        self.print_balls_button = tk.Button(self, text="Skriv ut alla bollar", command=self.print_balls)
-        self.print_balls_button.pack()
+        self.print_balls_button = tk.Button(self, text="Skriv ut alla bollar", command=self.print_balls, fg='black', bg='lime', font=('Helvetica', 12))
+        self.print_balls_button.pack(pady=5)
 
-        self.feed_button = tk.Button(self, text="Mata djur", command=self.feed_animal)
-        self.feed_button.pack()
+        self.feed_button = tk.Button(self, text="Mata djur", command=self.feed_animal, fg='black', bg='lime', font=('Helvetica', 12))
+        self.feed_button.pack(pady=5)
 
-        self.play_button = tk.Button(self, text="Leka med djur", command=self.play_with_animal)
-        self.play_button.pack()
+        self.play_button = tk.Button(self, text="Leka med djur", command=self.play_with_animal, fg='black', bg='lime', font=('Helvetica', 12))
+        self.play_button.pack(pady=5)
 
-        self.quit_button = tk.Button(self, text="Avsluta", command=self.quit)
-        self.quit_button.pack()
+        self.quit_button = tk.Button(self, text="Avsluta", command=self.quit, fg='black', bg='lime', font=('Helvetica', 12))
+        self.quit_button.pack(pady=5)
 
     def print_animals(self):
         animals = self.owner.print_animals()
@@ -198,10 +199,11 @@ class Application(tk.Tk):
     def select_item(self, items, title):
         top = tk.Toplevel(self)
         top.title(title)
-        listbox = tk.Listbox(top)
+        top.configure(bg='black')
+        listbox = tk.Listbox(top, fg='lime', bg='black', font=('Helvetica', 12))
         for item in items:
             listbox.insert(tk.END, item)
-        listbox.pack()
+        listbox.pack(pady=10)
 
         selected_item = tk.StringVar()
         def on_select():
@@ -211,8 +213,8 @@ class Application(tk.Tk):
             except IndexError:
                 pass
 
-        select_button = tk.Button(top, text="Välj", command=lambda: on_select())
-        select_button.pack()
+        select_button = tk.Button(top, text="Välj", command=on_select, fg='black', bg='lime', font=('Helvetica', 12))
+        select_button.pack(pady=5)
 
         self.wait_window(top)
         return selected_item.get() if selected_item.get() else None
