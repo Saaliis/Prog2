@@ -12,7 +12,7 @@ class Ball:
     def lower_quality(self, amount):
         # Minska bollens kvalitet med ett angivet värde
         self.quality -= amount
-        if (self.quality < 0):  # Kvaliteten kan inte bli mindre än 0
+        if self.quality < 0:  # Kvaliteten kan inte bli mindre än 0
             self.quality = 0
 
     def __str__(self):
@@ -156,8 +156,8 @@ class Application(tk.Tk):
 
     def create_widgets(self):
         # Skapa och konfigurera huvudetiketten
-        self.label = tk.Label(self, text="Välkommen till Djurparken", fg='lime', bg='black', font=('Helvetica', 16))
-        self.label.pack(pady=10)
+        self.header_label = tk.Label(self, text="Välkommen till Djurparken", fg='lime', bg='black', font=('Helvetica', 16))
+        self.header_label.pack(pady=10)
 
         # Skapa och konfigurera ram för utmatningstext
         self.output_frame = tk.Frame(self, bg='black')
@@ -177,10 +177,10 @@ class Application(tk.Tk):
         self.print_balls_button = tk.Button(self.button_frame, text="Skriv ut alla bollar", command=self.print_balls, fg='black', bg='lime', font=('Helvetica', 12))
         self.print_balls_button.grid(row=0, column=1, padx=10, pady=5)
 
-        self.feed_button = tk.Button(self.button_frame, text="Mata djur", command=self.show_feed_options, fg='black', bg='lime', font=('Helvetica', 12))
+        self.feed_button = tk.Button(self.button_frame, text="Mata djur", command=lambda: self.show_options("Mata djur"), fg='black', bg='lime', font=('Helvetica', 12))
         self.feed_button.grid(row=1, column=0, padx=10, pady=5)
 
-        self.play_button = tk.Button(self.button_frame, text="Leka med djur", command=self.show_play_options, fg='black', bg='lime', font=('Helvetica', 12))
+        self.play_button = tk.Button(self.button_frame, text="Leka med djur", command=lambda: self.show_options("Leka med djur"), fg='black', bg='lime', font=('Helvetica', 12))
         self.play_button.grid(row=1, column=1, padx=10, pady=5)
 
         self.quit_button = tk.Button(self.button_frame, text="Avsluta", command=self.quit, fg='black', bg='lime', font=('Helvetica', 12))
@@ -198,34 +198,47 @@ class Application(tk.Tk):
         self.output_text.delete(1.0, tk.END)
         self.output_text.insert(tk.END, balls)
 
-    def show_feed_options(self):
-        # Visa alternativ för att mata djur
+    def show_options(self, action):
+        # Rensa utmatningstexten
+        self.output_text.delete(1.0, tk.END)
+
+        # Rensa alternativramen
         self.clear_frame(self.button_frame)
 
+        # Ställ in ny rubrik beroende på vilken åtgärd som valts
+        action_label = tk.Label(self.button_frame, text=action, fg='lime', bg='black', font=('Helvetica', 16))
+        action_label.grid(row=0, column=0, columnspan=2, pady=10)
+
+        if action == "Mata djur":
+            self.show_feed_options()
+        elif action == "Leka med djur":
+            self.show_play_options()
+
+    def show_feed_options(self):
         animals = self.owner.get_animals()
         animal_options = [f"{index}: {animal}" for index, animal in enumerate(animals)]
 
         # Skapa etikett och dropdown-meny för att välja djur att mata
         self.label_select_animal = tk.Label(self.button_frame, text="Välj ett djur att mata:", fg='lime', bg='black', font=('Helvetica', 12))
-        self.label_select_animal.grid(row=0, column=0, pady=5)
+        self.label_select_animal.grid(row=1, column=0, pady=5)
         
         self.animal_var = tk.StringVar(self.button_frame)
         self.animal_menu = tk.OptionMenu(self.button_frame, self.animal_var, *animal_options)
         self.animal_menu.config(fg='black', bg='lime', font=('Helvetica', 12))
-        self.animal_menu.grid(row=0, column=1, pady=5)
+        self.animal_menu.grid(row=1, column=1, pady=5)
 
         # Skapa etikett och dropdown-meny för att välja mat
         self.label_select_food = tk.Label(self.button_frame, text="Välj mat:", fg='lime', bg='black', font=('Helvetica', 12))
-        self.label_select_food.grid(row=1, column=0, pady=5)
+        self.label_select_food.grid(row=2, column=0, pady=5)
 
         self.food_var = tk.StringVar(self.button_frame)
         self.food_menu = tk.OptionMenu(self.button_frame, self.food_var, "köttbullar", "fisk", "hundmat", "kattemat")
         self.food_menu.config(fg='black', bg='lime', font=('Helvetica', 12))
-        self.food_menu.grid(row=1, column=1, pady=5)
+        self.food_menu.grid(row=2, column=1, pady=5)
 
         # Skapa knapp för att mata djuret
         self.feed_button_confirm = tk.Button(self.button_frame, text="Mata", command=self.feed_animal, fg='black', bg='lime', font=('Helvetica', 12))
-        self.feed_button_confirm.grid(row=2, column=0, columnspan=2, pady=5)
+        self.feed_button_confirm.grid(row=3, column=0, columnspan=2, pady=5)
 
     def feed_animal(self):
         # Hämta valt djur och mat och visa resultatet i utmatningstexten
@@ -235,38 +248,36 @@ class Application(tk.Tk):
             result = self.owner.feed(int(animal_index), food)
             self.output_text.delete(1.0, tk.END)
             self.output_text.insert(tk.END, result)
+        self.show_main_menu()
 
     def show_play_options(self):
-        # Visa alternativ för att leka med djur
-        self.clear_frame(self.button_frame)
-
         animals = self.owner.get_animals()
         animal_options = [f"{index}: {animal}" for index, animal in enumerate(animals)]
 
         # Skapa etikett och dropdown-meny för att välja djur att leka med
         self.label_select_animal = tk.Label(self.button_frame, text="Välj ett djur att leka med:", fg='lime', bg='black', font=('Helvetica', 12))
-        self.label_select_animal.grid(row=0, column=0, pady=5)
+        self.label_select_animal.grid(row=1, column=0, pady=5)
 
         self.animal_var = tk.StringVar(self.button_frame)
         self.animal_menu = tk.OptionMenu(self.button_frame, self.animal_var, *animal_options)
         self.animal_menu.config(fg='black', bg='lime', font=('Helvetica', 12))
-        self.animal_menu.grid(row=0, column=1, pady=5)
+        self.animal_menu.grid(row=1, column=1, pady=5)
 
         balls = self.owner.get_balls()
         ball_options = [f"{index}: {ball}" for index, ball in enumerate(balls)]
 
         # Skapa etikett och dropdown-meny för att välja boll
         self.label_select_ball = tk.Label(self.button_frame, text="Välj en boll:", fg='lime', bg='black', font=('Helvetica', 12))
-        self.label_select_ball.grid(row=1, column=0, pady=5)
+        self.label_select_ball.grid(row=2, column=0, pady=5)
 
         self.ball_var = tk.StringVar(self.button_frame)
         self.ball_menu = tk.OptionMenu(self.button_frame, self.ball_var, *ball_options)
         self.ball_menu.config(fg='black', bg='lime', font=('Helvetica', 12))
-        self.ball_menu.grid(row=1, column=1, pady=5)
+        self.ball_menu.grid(row=2, column=1, pady=5)
 
         # Skapa knapp för att leka med djuret
         self.play_button_confirm = tk.Button(self.button_frame, text="Leka", command=self.play_with_animal, fg='black', bg='lime', font=('Helvetica', 12))
-        self.play_button_confirm.grid(row=2, column=0, columnspan=2, pady=5)
+        self.play_button_confirm.grid(row=3, column=0, columnspan=2, pady=5)
 
     def play_with_animal(self):
         # Hämta valt djur och boll och visa resultatet i utmatningstexten
@@ -276,12 +287,17 @@ class Application(tk.Tk):
             result = self.owner.play(int(animal_index), int(ball_index))
             self.output_text.delete(1.0, tk.END)
             self.output_text.insert(tk.END, result)
+        self.show_main_menu()
+
+    def show_main_menu(self):
+        # Rensa alternativramen och visa huvudmenyn
+        self.clear_frame(self.button_frame)
+        self.create_widgets()
 
     def clear_frame(self, frame):
         # Rensa innehållet i ett frame
         for widget in frame.winfo_children():
             widget.destroy()
-        self.create_widgets()
 
 # Huvudprogram
 if __name__ == "__main__":
